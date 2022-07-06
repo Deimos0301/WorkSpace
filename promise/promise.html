@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise</title>
+</head>
+<body>
+    <script>
+
+        const url1 = 'https://stockmann.ru/istk/jQ5j8cr9YDfuNjemnjBib-6G56TKdKDI_g7n8_7bwlY/rs:fit:240:360:0/g:ce/bG9jYWw6Ly8vdXBsb2FkL2libG9jay84ZTIvNTA3MjIyNl8xLkpQRw.jpg';
+        const url2 = 'https://images.wbstatic.net/big/new/14600000/14607167-1.jpg';
+        const url3 = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0l7u02RDHaOBmYwdUSADSio1PO3Pd3ENSRA&usqp=CAU';
+
+        function loadImage(url1) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.src = url1;
+                img.height = 100;
+                document.body.append(img);
+
+                img.addEventListener('load', () => {
+                    resolve();
+                })
+                img.addEventListener('error', () => {
+                    reject();
+                })
+            });
+        }
+
+        // loadImage(url1)
+        //     .then(() => loadImage(url2))
+        //     .then(() => loadImage(url3))
+        //     console.log('все картинки загружены')
+
+        loadImage(url2)
+            .then(() => {
+                console.log('всё ok')
+            })
+            .then(() => loadImage(url2))
+            .then(() => loadImage(url2))
+            .then(() => loadImage(url1))
+            .then(() => loadImage(url1))
+            .then(() => loadImage(url3))
+            .then(() => loadImage(url3))
+            .catch(() => {
+                console.log('где-то ошибка')
+            });
+
+ 
+            
+    </script>
+</body>
+</html>

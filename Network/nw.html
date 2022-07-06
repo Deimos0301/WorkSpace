@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network</title>
+</head>
+
+<body>
+
+    <button id="loadButton">Загрузить</button>
+
+    <div id="result"></div>
+
+
+    <script>
+
+        const loadButton = document.querySelector('#loadButton');
+        const result = document.querySelector('#result');
+
+        loadButton.addEventListener('click', () => {
+            const xhr = new XMLHttpRequest();
+
+            xhr.open('GET', 'family.json');
+            xhr.send();
+            xhr.addEventListener('load', () => {
+                console.log('accepted');
+
+                if (xhr === 404) {
+                    console.log('file undefined');
+                } else {
+                    // console.log(xhr.responseText);
+                    // result.innerText = xhr.responseText;
+                    result.innerHTML = '';
+                    const familiar = JSON.parse(xhr.responseText);
+                    for (const fam of familiar) {
+                        const famDOM = newFams(fam);
+                        result.appendChild(famDOM);
+                    }
+                };
+            });
+        });
+
+        function newFams(fam) {
+            const div = document.createElement('div');
+            div.classList.add('fam');
+            div.textContent = `${fam.name} ${fam.lastName}`;
+            return div;
+        }
+    </script>
+</body>
+
+</html>
