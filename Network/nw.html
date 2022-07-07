@@ -21,27 +21,43 @@
         const result = document.querySelector('#result');
 
         loadButton.addEventListener('click', () => {
-            const xhr = new XMLHttpRequest();
-
-            xhr.open('GET', 'family.json');
-            xhr.send();
-            xhr.addEventListener('load', () => {
-                console.log('accepted');
-
-                if (xhr === 404) {
-                    console.log('file undefined');
-                } else {
-                    // console.log(xhr.responseText);
-                    // result.innerText = xhr.responseText;
-                    result.innerHTML = '';
-                    const familiar = JSON.parse(xhr.responseText);
-                    for (const fam of familiar) {
-                        const famDOM = newFams(fam);
-                        result.appendChild(famDOM);
-                    }
-                };
-            });
+            fetch('family.json')
+                .then(response => {
+                    response.json().then(familiar => {
+                        for (fam of familiar) {
+                            const famNode = newFams(fam);
+                            result.appendChild(famNode);
+                        }
+                    })
+                })
+                .catch(() => console.error('Что-то пошло не так'));
         });
+
+        // function fetch(url) {
+        //     return new Promise((resolve) => {
+        //         const xhr = new XMLHttpRequest();
+
+        //         xhr.open('GET', 'family.json');
+        //         xhr.send();
+        //         xhr.addEventListener('load', () => {
+        //             console.log('accepted');
+
+        //             if (xhr.status >= 404) {
+        //                 console.log('file undefined');
+        //                 reject();
+        //             } else {
+        //                 // console.log(xhr.responseText);
+        //                 // result.innerText = xhr.responseText;
+        //                 //// result.innerHTML = '';
+        //                 //// const familiar = JSON.parse(xhr.responseText);
+        //                 //// for (const fam of familiar) {
+        //                 ////     const famDOM = newFams(fam);
+        //                 ////     result.appendChild(famDOM);
+        //                 resolve(xhr.response);
+        //             };
+        //         });
+        //     });
+        // };
 
         function newFams(fam) {
             const div = document.createElement('div');
