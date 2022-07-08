@@ -41,13 +41,18 @@
     </div>
    
     <script>
-        const socket = new WebSocket("ws:http://127.0.0.1:5500/");
+        const socket = new WebSocket("ws://localhost:5555");
         const messageText = document.querySelector('#messageText');
         const sendButton = document.querySelector('#sendButton');
         const messageContainer = document.querySelector('#messageContainer');
   
-        socket.addEventListener('message', function (event) {
+        socket.onmessage = function (event) {
             addMessage(event.data);
+        };
+
+
+        socket.addEventListener('message', function(event) {
+            alert('Отправляется');
         });
   
         socket.addEventListener('error', function() {
@@ -55,6 +60,7 @@
         });
   
         function addMessage(message) {
+            console.log('addMessage');
             const messageItem = document.createElement('li');
   
             messageItem.className = "list-group-item";
@@ -65,12 +71,14 @@
         }
   
         function sendMessage() {
-            socket.send(messageText.value);
+            console.log('sendMessage');
+            socket.send('жопа');
             messageText.value = '';
         }
-  
+
+
         sendButton.addEventListener('click', sendMessage);
-        messageText.addEventListener('change', sendMessage);
+        // messageText.addEventListener('change', sendMessage);
     </script>
  </body>
 </html>
